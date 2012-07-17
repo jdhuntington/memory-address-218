@@ -7,7 +7,7 @@ module MemoryAddress218
 
     def initialize(side)
       @side  = side
-      @cards = self.class.fresh_deck
+      @cards = self.class.fresh_deck side
       @hand  = @cards.select { |c| c.starts_in_hand? }
       @deck  = (@cards - @hand).shuffle
     end
@@ -25,15 +25,15 @@ module MemoryAddress218
       @hand << @deck.shift
     end
 
-    def self.fresh_deck
+    def self.fresh_deck side
       deck = []
-      2.times { deck << Card::AirStrike.new     }
-      7.times { deck << Card::Infantry.new      }
-      5.times { deck << Card::HeavyWeapons.new  }
-      3.times { deck << Card::Artillery.new     }
-      3.times { deck << Card::Paratroopers.new  }
-      3.times { deck << Card::Tank.new          }
-      3.times { deck << Card::SpecialForces.new }
+      2.times { deck << Card::AirStrike.new(side)     }
+      7.times { deck << Card::Infantry.new(side)      }
+      5.times { deck << Card::HeavyWeapons.new(side)  }
+      3.times { deck << Card::Artillery.new(side)     }
+      3.times { deck << Card::Paratroopers.new(side)  }
+      3.times { deck << Card::Tank.new(side)          }
+      3.times { deck << Card::SpecialForces.new(side) }
       deck
     end
   end

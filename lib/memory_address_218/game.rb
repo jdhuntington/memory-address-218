@@ -6,8 +6,8 @@ module MemoryAddress218
       @player_a, @player_b = player_a, player_b
       @map = Map.new
       @cards = {
-        :a => Cards.new(:allied),
-        :b => Cards.new(:german)
+        :a => Cards.new(:a),
+        :b => Cards.new(:b)
       }
       @player_a.opponent = @player_b
       @player_a.game     = self

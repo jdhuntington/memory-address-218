@@ -5,11 +5,16 @@ module MemoryAddress218
       require player
     end
   end
+
+  def self.expect_side(side)
+    raise ArgumentError.new("Expected side to be one of :a or :b, instead is #{side.inspect}") unless [:a,:b].include? side
+  end
 end
 
-require File.expand_path('../memory_address_218/game', __FILE__)
-require File.expand_path('../memory_address_218/player', __FILE__)
-require File.expand_path('../memory_address_218/map', __FILE__)
-require File.expand_path('../memory_address_218/cards', __FILE__)
-require File.expand_path('../memory_address_218/action', __FILE__)
-require File.expand_path('../memory_address_218/location', __FILE__)
+require File.expand_path('../memory_address_218/game'           , __FILE__)
+require File.expand_path('../memory_address_218/player'         , __FILE__)
+require File.expand_path('../memory_address_218/map'            , __FILE__)
+require File.expand_path('../memory_address_218/cards'          , __FILE__)
+require File.expand_path('../memory_address_218/action'         , __FILE__)
+require File.expand_path('../memory_address_218/location'       , __FILE__)
+require File.expand_path('../memory_address_218/invalid_action' , __FILE__)
