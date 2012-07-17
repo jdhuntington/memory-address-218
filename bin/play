@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+require File.expand_path('../../lib/memory_address_218', __FILE__)
+
+MemoryAddress218.load_players
+
+
+player_a = Kernel.const_get(ARGV[0]).new
+player_b = Kernel.const_get(ARGV[1]).new
+game     = MemoryAddress218::Game.new(player_a, player_b)
+
+game.play
+                            
