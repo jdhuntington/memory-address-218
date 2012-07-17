@@ -17,14 +17,23 @@ module MemoryAddress218
       @turn = 1
     end
 
-    def deck_for(player)
+
+    def cards_for(player)
       player_ref = resolve_player player
-      @cards[player_ref].deck
+      @cards[player_ref]
+    end
+
+    def deck_for(player)
+      cards_for(player).deck
     end
 
     def hand_for(player)
+      cards_for(player).hand
+    end
+
+    def map_from_perspective(player)
       player_ref = resolve_player player
-      @cards[player_ref].hand
+      map.from_perspective player_ref
     end
 
     def resolve_player(player)
@@ -51,6 +60,7 @@ module MemoryAddress218
     end
 
     def handle_turn
+      cards_for(@current_player).draw(@turn)
       actions = @current_player.take_turn @turn
       raise ArgumentError.new("Expected actions to be instances of Action") unless actions.each { |a| a.is_a? Action }
       if @turn == 1 && actions.length != 1
@@ -69,6 +79,7 @@ module MemoryAddress218
     end
 
     def play
+      @cards.values.each(&:draw_initial_hand)
       until over? do
         handle_turn
         turn_over!

@@ -12,6 +12,19 @@ module MemoryAddress218
       @deck  = (@cards - @hand).shuffle
     end
 
+    def draw_initial_hand
+      3.times { draw_card }
+    end
+
+    def draw(turn)
+      times = turn == 1 ? 1 : 2
+      times.times { draw_card }
+    end
+
+    def draw_card
+      @hand << @deck.shift
+    end
+
     def self.fresh_deck
       deck = []
       2.times { deck << Card::AirStrike.new     }

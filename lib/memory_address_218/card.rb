@@ -1,6 +1,8 @@
 module MemoryAddress218
   class Card
 
+    attr_accessor :side
+
     def starts_in_hand?
       false
     end
