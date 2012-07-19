@@ -29,5 +29,26 @@ module MemoryAddress218
     def origin?
       self == self.class.origin
     end
+
+    DIRECTIONS = {
+      :n  => [ 0,  1],
+      :nw => [-1,  1],
+      :w  => [-1,  0],
+      :sw => [-1, -1],
+      :s  => [ 0, -1],
+      :se => [ 1, -1],
+      :e  => [ 1,  0],
+      :ne => [ 1,  1]
+    }
+
+    def self.directions
+      DIRECTIONS.keys
+    end
+
+    DIRECTIONS.each do |name, coords|
+      define_method name do
+        self.class.new(x + coords.first, y + coords.last)
+      end
+    end
   end
 end
