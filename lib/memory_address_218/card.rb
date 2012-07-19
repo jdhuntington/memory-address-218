@@ -1,3 +1,5 @@
+require 'rainbow'
+
 module MemoryAddress218
   class Card
 
@@ -18,6 +20,20 @@ module MemoryAddress218
 
     def starts_in_hand?
       false
+    end
+
+    def fancy_format
+      color = side == :a ? :green : :red
+      self.class.inspect.split(':').last[0].color(color)
+    end
+
+    class Origin < Card
+      def initialize(*args)
+      end
+
+      def fancy_format
+        '#'.color :white
+      end
     end
 
     class AirStrike < Card

@@ -17,6 +17,9 @@ module MemoryAddress218
       @turn = 1
     end
 
+    def log(msg)
+      MemoryAddress218.log('Game', msg)
+    end
 
     def cards_for(player)
       player_ref = resolve_player player
@@ -49,6 +52,7 @@ module MemoryAddress218
     end
 
     def turn_over!
+      log("#turn_over!")
       if @current_player == @player_a
         @current_player = @player_b
       elsif @current_player == @player_b
@@ -59,14 +63,28 @@ module MemoryAddress218
       @turn += 1
     end
 
+    def commit action
+      my_map = map_from_perspective(@current_player)
+      my_map.store action.card, action.location
+      map.log_state
+    end
+
     def handle_turn
       cards_for(@current_player).draw(@turn)
-      actions = @current_player.take_turn @turn
-      raise ArgumentError.new("Expected actions to be instances of Action") unless actions.each { |a| a.is_a? Action }
-      if @turn == 1 && actions.length != 1
-        raise ArgumentError.new("Expected 1 Action for the first turn")
-      elsif actions.length != 2
-        raise ArgumentError.new("Expected 2 Actions")
+      expected_actions = @turn == 1 ? 1 : 2
+      taken_actions    = 0
+      actions          = []
+      until taken_actions >= expected_actions
+        received = @current_player.take_turn @turn, :expected_actions => expected_actions - taken_actions
+        actions += [received].flatten
+        raise ArgumentError.new("Expected actions to be instances of Action") unless actions.each { |a| a.is_a? Action }
+        log "Got #{actions.length} actions back for turn #{@turn}."
+        actions.each_with_index { |a, i| log "Action #{i}: #{a.fancy_format}" }
+        actions.each do |a|
+          raise InvalidAction.new("Too many actions") if taken_actions >= expected_actions
+          commit a
+          taken_actions += 1
+        end
       end
     end
 

@@ -28,16 +28,16 @@ module MemoryAddress218
       raise "Implement #take_turn in #{self.class.inspect}."
     end
 
-    def base_location
-      MemoryAddress218::Location.new(0, -1)
-    end
-
     def have_base?
-      map.occupied?(base_location, self)
+      map.occupied? Location.base
     end
 
     def map
       game.map_from_perspective(self)
+    end
+
+    def log(msg)
+      MemoryAddress218.log(self.class.inspect, msg)
     end
   end
 end

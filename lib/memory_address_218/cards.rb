@@ -18,6 +18,7 @@ module MemoryAddress218
 
     def draw(turn)
       times = turn == 1 ? 1 : 2
+      MemoryAddress218.log("Cards(#{side})", "Drawing #{times}")
       times.times { draw_card }
     end
 

@@ -14,8 +14,20 @@ module MemoryAddress218
       new(0, -1)
     end
 
+    def self.origin
+      new(0, 0)
+    end
+
+    def fancy_format
+      [x,y].inspect
+    end
+
     def ==(other)
       @x == other.x && @y == other.y
+    end
+
+    def origin?
+      self == self.class.origin
     end
   end
 end

@@ -9,6 +9,10 @@ module MemoryAddress218
   def self.expect_side(side)
     raise ArgumentError.new("Expected side to be one of :a or :b, instead is #{side.inspect}") unless [:a,:b].include? side
   end
+
+  def self.log(instigator, message)
+    STDERR.printf("%15s: %s\n", instigator, message)
+  end
 end
 
 require File.expand_path('../memory_address_218/game'           , __FILE__)
