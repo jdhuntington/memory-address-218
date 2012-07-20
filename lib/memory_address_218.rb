@@ -15,6 +15,21 @@ module MemoryAddress218
   end
 end
 
+class Array
+  def random
+    self[rand(length)]
+  end
+
+  def to_directions
+    raise "unknown array configuration" if self[4] != :me && length != 9
+    directions = []
+    [:ne, :n, :nw, :e, :invalid, :w, :se, :s, :sw].each_with_index do |d, i|
+      directions << d if self[i] == :ja
+    end
+    directions
+  end
+end
+
 require File.expand_path('../memory_address_218/game'           , __FILE__)
 require File.expand_path('../memory_address_218/player'         , __FILE__)
 require File.expand_path('../memory_address_218/map'            , __FILE__)

@@ -3,7 +3,7 @@ require 'rainbow'
 module MemoryAddress218
   class Card
 
-    attr_accessor :side
+    attr_accessor :side, :location, :game, :map
 
     def initialize(side)
       MemoryAddress218.expect_side side
@@ -25,6 +25,21 @@ module MemoryAddress218
     def fancy_format
       color = side == :a ? :green : :red
       self.class.inspect.split(':').last[0].color(color)
+    end
+
+    def supplied?(seen=[])
+      if seen.include?(self)
+        false
+      elsif location == Location.base
+        true
+      else
+        new_seen = seen + [self]
+        supplying_neighbors.any? { |n| n.supplied?(new_seen) }
+      end
+    end
+
+    def supplying_neighbors
+      supply.to_directions.map { |d| map.at location.send(d) }.compact
     end
 
     class Origin < Card

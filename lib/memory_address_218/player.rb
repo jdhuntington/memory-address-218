@@ -39,5 +39,9 @@ module MemoryAddress218
     def log(msg)
       MemoryAddress218.log(self.class.inspect, msg)
     end
+
+    def cards_in_play
+      game.cards_in_play(self)
+    end
   end
 end

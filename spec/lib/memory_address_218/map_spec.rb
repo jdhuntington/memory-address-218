@@ -37,16 +37,4 @@ describe MemoryAddress218::Map do
     end
     
   end
-
-  describe '#supplied? (supply lines)' do
-    it 'should be true for one\'s base' do
-      @map_a.supplied?(MemoryAddress218::Location.base, @card).should be_true
-      @map_b.supplied?(MemoryAddress218::Location.base, @card_prime).should be_true
-    end
-
-    it 'should be false for opponent\'s base' do
-      @map_a.supplied?(MemoryAddress218::Location.base, @card_prime).should be_false
-      @map_b.supplied?(MemoryAddress218::Location.base, @card).should be_false
-    end
-  end
 end

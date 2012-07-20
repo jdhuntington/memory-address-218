@@ -14,7 +14,14 @@ class NaivePlayer
     log "Playing card"
     if have_base?
       log "Have a base, building wherever I can"
-      build_at
+      card_i_will_play = first_non_airstrike
+      map.cards_in_play.each do |location, card|
+        MemoryAddress218::Location.directions.shuffle.each do |dir|
+          new_location = location.send(dir)
+return MemoryAddress218::Action.new(card_i_will_play, l) if supplied?(new_location, card_i_will_play) && !occupied?(new_location)
+        end
+      end
+      raise "I can't play anywhere. :("
     else
       log "Don't have base, playing one"
       build_base

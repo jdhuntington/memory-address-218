@@ -44,23 +44,8 @@ module MemoryAddress218
       side == :a ? Location.base : Location.base.transpose
     end
 
-    def supplied?(location, card=nil)
-      if occupied?(location) && card
-        raise InvalidAction.new("Can't check for supply chain for card on occupied location")
-      elsif card                   # Checking new card
-        if base_location(card.side) == location
-          true
-        else
-          # TODO
-          false                 # Check supply chain to new card
-        end
-      else                      # Check supply chain to existing card
-        false
-      end
-    end
-
     def log_state
-      MemoryAddress218.log("Map", "\n#{fancy_format}")
+      fancy_format.each_line { |x| MemoryAddress218.log("Map", x.strip) }
     end
 
     def height
@@ -101,6 +86,16 @@ module MemoryAddress218
       output
     end
 
+    def cards_in_play
+      cards = {}
+      @grid.each do |x, column|
+        column.each do |y, card|
+          l = Location.new x,y
+          cards[l] = card
+        end
+      end
+      cards
+    end
 
     class MapProxy
       def initialize(map, opts={})
@@ -108,9 +103,21 @@ module MemoryAddress218
         @transpose = !!opts[:transpose]
       end
 
+      def cards_in_play
+        retval = {}
+        @map.cards_in_play.each do |k,v|
+          k = k.transpose if @transpose
+          retval[k] = v
+        end
+        retval
+      end
+
       def store card, location
         location = location.transpose if @transpose
         @map.store card, location
+        card.location = location
+        card.map      = self
+        true
       end
 
       def at location
@@ -124,9 +131,7 @@ module MemoryAddress218
       end
 
       def occupied?(location)
-        MemoryAddress218.log("map-occupied", "Checking #{location.fancy_format}")
         location = location.transpose if @transpose
-        MemoryAddress218.log("map-occupied", "Checking #{location.fancy_format}")
         @map.occupied? location
       end
     end
